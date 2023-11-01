@@ -77,17 +77,18 @@ try {
     // START GAME
     gameController.setGameState(GameState.IN_PROGRESS);
     while(game.gameState===GameState.IN_PROGRESS || game.gameState===GameState.NOT_STARTED){
+        let boxCreated = false;
         try {
             gameController.displayBoard();
             let thisPlayer = playerList[game.playerMoveOrder![i%playerList.length]];
             const d1: string = prompt(thisPlayer.name+"'s move. Please enter the dot number of first dot to draw a line from");
             const d2: string = prompt("Enter the dot number of second dot to draw a line to. Choose adjacent dot only");
-            gameController.move(d1, d2, thisPlayer);
+            i = gameController.move(d1, d2, thisPlayer, i);
         } catch (error) {
             console.error(chalk.red(error));
             continue;
         }
-        i++;
+        // boxCreated ? null : i++;
     }
 } catch (error) {
     console.error(error)

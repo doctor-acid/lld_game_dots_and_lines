@@ -12,15 +12,19 @@ class GameController{
         this.game = g;
     }
 
-    public move(dotA: string, dotB: string, player: Player){
+    public move(dotA: string, dotB: string, player: Player, playersMove: number){
         let dotARef = this.game.board?.dotMap.get(dotA)!;
         let dotBRef = this.game.board?.dotMap.get(dotB)!;
         if(!dotARef || !dotBRef) throw new IllegalMoveError('Please enter valid values for dot references. Cannot find one of the dots');
         let line = this.checkAndCreateLine(dotARef, dotBRef, player);
         
         // if a valid line. Then check if a new box is formed/owned?
-        this.checkAndUpdateBox(dotARef, dotBRef, line);
+        let numOfBoxes = this.checkAndUpdateBox(dotARef, dotBRef, line);
+        playersMove = numOfBoxes > 0? playersMove+1: playersMove
+        // playersMove = this.game.boxCreationReward(playersMove, numOfBoxes);
+        // this.game.checkWin();
         this.game.addMove(line);
+        return playersMove;
     }
 
     private checkAndCreateLine(dotA: Dot, dotB: Dot, player: Player) : Line{
@@ -67,6 +71,8 @@ class GameController{
     }
 
     private checkAndUpdateBox(a: Dot, b: Dot, line: Line){
+        let boxCreated = false;
+        let numOfBoxes = 0;
         // let lesserDot = Dot.getLesserDot(a, b);
         let directionOfLine : Direction2D = a.getY()==b.getY() ? Direction2D.HORIZONTAL : Direction2D.VERTICAL;
 
@@ -92,14 +98,21 @@ class GameController{
             && boxM?.getLine(Direction.RIGHT) && boxM?.getLine(Direction.LEFT)
         ){
             boxM.setCaptured(true);
-            boxM.setOwner(line.getPlayer()!)
+            boxM.setOwner(line.getPlayer()!);
+            boxCreated = true;
+            numOfBoxes++;
         }
         if(boxN?.getLine(Direction.BOTTOM) && boxN?.getLine(Direction.TOP)
             && boxN?.getLine(Direction.RIGHT) && boxN?.getLine(Direction.LEFT)
         ){
             boxN.setCaptured(true);
-            boxN.setOwner(line.getPlayer()!)
+            boxN.setOwner(line.getPlayer()!);
+            boxCreated = true;
+            numOfBoxes++;
         }
+
+        return numOfBoxes;
+
         // console.log("2222===lesserBox")
         // console.log(lesserBox)
         // console.log("2222===boxM")
