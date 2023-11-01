@@ -20,7 +20,7 @@ class GameController{
         
         // if a valid line. Then check if a new box is formed/owned?
         let numOfBoxes = this.checkAndUpdateBox(dotARef, dotBRef, line);
-        playersMove = numOfBoxes > 0? playersMove+1: playersMove
+        // playersMove = numOfBoxes > 0? playersMove+1: playersMove
         this.game.addMove(line);
         playersMove = this.game.boxCreationReward(playersMove, numOfBoxes);
         this.game.checkWin();
@@ -77,21 +77,13 @@ class GameController{
         let directionOfLine : Direction2D = a.getY()==b.getY() ? Direction2D.HORIZONTAL : Direction2D.VERTICAL;
 
         let [boxN, boxM] = this.game.board!.getAdjacentBoxesToALine(a, b);
-        let lesserBox = boxN && boxM ? Box.getLesserBox(boxN, boxM) : boxM ? boxN : boxM;
+        let lesserBox = Box.getLesserBox(boxN, boxM, this.game.board?.boxDimension!, directionOfLine) 
         if(directionOfLine===Direction2D.HORIZONTAL){
             lesserBox?.setLine(line, Direction.BOTTOM)
-            if(boxM && boxN){
-                lesserBox===boxM ? boxN?.setLine(line, Direction.TOP) : boxM?.setLine(line, Direction.TOP);
-            }else{
-                boxN ? boxN?.setLine(line, Direction.TOP) : boxM?.setLine(line, Direction.TOP);
-            }
+            lesserBox===boxM ? boxN?.setLine(line, Direction.TOP) : boxM?.setLine(line, Direction.TOP);
         }else{
             lesserBox?.setLine(line, Direction.RIGHT)
-            if(boxM && boxN){
-                lesserBox===boxM ? boxN?.setLine(line, Direction.LEFT) : boxM?.setLine(line, Direction.LEFT);
-            }else{
-                boxN ? boxN?.setLine(line, Direction.LEFT) : boxM?.setLine(line, Direction.LEFT);
-            }
+            lesserBox===boxM? boxN?.setLine(line, Direction.LEFT) : boxM?.setLine(line, Direction.LEFT);
         }
 
         if(boxM?.getLine(Direction.BOTTOM) && boxM?.getLine(Direction.TOP)
@@ -111,13 +103,13 @@ class GameController{
             numOfBoxes++;
         }
 
-        console.log("2222===lesserBox")
-        console.log(lesserBox)
-        console.log("2222===boxM")
-        console.log(boxM)
-        console.log("2222===boxN")
-        console.log(boxN)
-        console.log(directionOfLine)
+        // console.log("2222===lesserBox")
+        // console.log(lesserBox)
+        // console.log("2222===boxM")
+        // console.log(boxM)
+        // console.log("2222===boxN")
+        // console.log(boxN)
+        // console.log(directionOfLine)
 
         return numOfBoxes;
     }
