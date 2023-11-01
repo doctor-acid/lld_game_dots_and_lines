@@ -1,10 +1,10 @@
 import PlayerInterface from "./model.player";
 
 class Player implements PlayerInterface{
-    name: String;
-    symbol: String;
+    name: string;
+    symbol: string;
     
-    constructor(name: String, symbol: String){
+    constructor(name: string, symbol: string){
         this.name = name;
         this.symbol = symbol;
     }

@@ -1,3 +1,7 @@
+import BoxCreationRewardStrategy from "../Strategies/BoxCreationReward";
+import winningStrategy from "../Strategies/WinStrategy";
+import boxRewardOneMove from "../Strategies/boxRewardOneMove";
+import MaxBoxWin from "../Strategies/winStrategyMaxBox";
 import { Board, Line, Player } from "../consumer";
 
 enum GameState{
@@ -12,6 +16,8 @@ class Game{
     private _playerMoveOrder?: Array<number>;
     private _round?: number;
     private _gameState?: GameState;
+    private _winningStrategy: winningStrategy;
+    private _boxCreationRewardStrategy: BoxCreationRewardStrategy;
     // private _legalMoveStrategy: LegalMoveStrategy;
 
     // private constructor(gb: GameBuilder){
@@ -24,7 +30,8 @@ class Game{
     //     this._gameState = gb.gameState;
     // }
     constructor(){
-        
+        this._boxCreationRewardStrategy = new boxRewardOneMove();
+        this._winningStrategy = new MaxBoxWin();
     }
 
     public get board(): Board | undefined {
@@ -39,6 +46,20 @@ class Game{
     }
     public set players(value: Array<Player>) {
         this._players = value;
+    }
+
+    public get winningStrategy(): winningStrategy {
+        return this._winningStrategy;
+    }
+    public set winningStrategy(winStrategy: winningStrategy) {
+        this._winningStrategy = winStrategy;
+    }
+
+    public get boxCreationRewardStrategy(): BoxCreationRewardStrategy {
+        return this._boxCreationRewardStrategy;
+    }
+    public set boxCreationRewardStrategy(boxRewardStrategy: BoxCreationRewardStrategy) {
+        this._boxCreationRewardStrategy = boxRewardStrategy;
     }
 
     public get moves(): Array<Line> | undefined {
@@ -92,6 +113,8 @@ class GameBuilder{
     private game: Game;
     private boxDimension: number;
     private players: Array<Player>;
+    private winningStrategy?: winningStrategy;
+    private boxCreationRewardStrategy?: BoxCreationRewardStrategy;
 
     constructor(){
         this.game = new Game();
@@ -107,6 +130,16 @@ class GameBuilder{
 
     public setPlayers(players: Array<Player>): GameBuilder{
         this.players = players;
+        return this;
+    }
+
+    public setWinningStrategy(Strategy: winningStrategy): GameBuilder{
+        this.winningStrategy = Strategy;
+        return this;
+    }
+
+    public setBoxCreationRewardStrategy(Strategy: BoxCreationRewardStrategy): GameBuilder{
+        this.boxCreationRewardStrategy = Strategy;
         return this;
     }
 
@@ -139,6 +172,8 @@ class GameBuilder{
         this.game.playerMoveOrder = playerMoveOrder;
         this.game.round = 0;
         this.game.winner = undefined;
+        this.game.winningStrategy = this.winningStrategy ? this.winningStrategy : this.game.winningStrategy;
+        this.game.boxCreationRewardStrategy = this.boxCreationRewardStrategy? this.boxCreationRewardStrategy : this.game.boxCreationRewardStrategy;
 
         return this.game;
     }

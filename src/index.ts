@@ -1,4 +1,6 @@
 import IllegalMoveError from "./Game/Errors/IllegalMoveError";
+import boxRewardOneMove from "./Game/Strategies/boxRewardOneMove";
+import MaxBoxWin from "./Game/Strategies/winStrategyMaxBox";
 import GameController from "./Game/controllers/game.controller";
 import GameResources from "./Game/producer";
 import { GameBuilder, GameState } from "./Game/services/game.service";
@@ -68,6 +70,11 @@ try {
     }
     console.log(playerList);
     const game = gameBuilder.setPlayers(playerList).build();
+
+    // can allow user input to define
+    gameBuilder.setBoxCreationRewardStrategy(new boxRewardOneMove());
+    gameBuilder.setWinningStrategy(new MaxBoxWin());
+
     const board = game.board!;
 
     const gameController = new GameController(game);

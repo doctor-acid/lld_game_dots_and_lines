@@ -4,7 +4,7 @@ import Line from "./line.service"
 
 
 class Board{
-    private boxDimension: number
+    public boxDimension: number
     // private dotDimension: number
     private boxes: Array<Array<Box>>
     private dots: Array<Array<Dot>>
