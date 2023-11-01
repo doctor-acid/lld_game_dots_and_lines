@@ -2,6 +2,7 @@ import { Player } from "../consumer";
 import Dot from "./dot.service";
 import Line from "./line.service";
 import Direction from "../models/direction.model";
+import { Direction2D } from "../producer";
 class Box{
     // private tl: Dot
     // private tr: Dot
@@ -80,13 +81,48 @@ class Box{
     public getAbsDistance(): number{
         return Math.sqrt((this.getXIndex()**2)*(this.getYIndex()**2));
     }
-    public static getLesserBox(a:Box, b:Box): Box{
-        if(a.getXIndex()===b.getXIndex()){
-            return a.getYIndex()>b.getYIndex()? b : a;
-        }else if(a.getYIndex()===b.getYIndex()){
-            return a.getXIndex()>b.getXIndex()? b : a;
+    public static getLesserBox(a:Box|undefined, b:Box| undefined, boxDimension: number, directionOfLine: Direction2D): Box|undefined{
+        if(a && b){
+            console.log("both a and b => no case")
+            if(a.getXIndex()===b.getXIndex()){
+                return a.getYIndex()>b.getYIndex()? b : a;
+            }else if(a.getYIndex()===b.getYIndex()){
+                return a.getXIndex()>b.getXIndex()? b : a;
+            }else{
+                return a.getAbsDistance() > b.getAbsDistance() ? b : a;
+            }
         }else{
-            return a.getAbsDistance() > b.getAbsDistance() ? b : a;
+            console.log("Just one box")
+            if(a){
+                if((a.getXIndex()===0 && directionOfLine===Direction2D.VERTICAL)){
+                    console.log("left wall return undefined left")
+                    return b;
+                }else if((a.getXIndex()===(boxDimension-1) && directionOfLine===Direction2D.VERTICAL)){
+                    console.log("right wall return this")
+                    return a;
+                }else if((a.getYIndex()===0 && directionOfLine===Direction2D.HORIZONTAL)){
+                    console.log("Top wall return undefined top")
+                    return b;
+                }else if((a.getYIndex()===(boxDimension-1) && directionOfLine===Direction2D.HORIZONTAL)){
+                    console.log("Bottom wall return this")
+                    return b;
+                }
+            }
+            if(b){
+                if((b.getXIndex()===0 && directionOfLine===Direction2D.VERTICAL)){
+                    console.log("left wall return undefined left")
+                    return a;
+                }else if((b.getXIndex()===(boxDimension-1) && directionOfLine===Direction2D.VERTICAL)){
+                    console.log("right wall return this")
+                    return b;
+                }else if((b.getYIndex()===0 && directionOfLine===Direction2D.HORIZONTAL)){
+                    console.log("Top wall return undefined top")
+                    return a;
+                }else if((b.getYIndex()===(boxDimension-1) && directionOfLine===Direction2D.HORIZONTAL)){
+                    console.log("Bottom wall return this")
+                    return b;
+                }
+            }
         }
     }
     public static getGreaterBox(a:Box, b:Box): Box{
