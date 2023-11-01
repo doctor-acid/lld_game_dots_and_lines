@@ -1,0 +1,21 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --build",
+    "run": "node ./build/index.js",
+    "start": "tsc --build && nodemon ./build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.8.3",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
