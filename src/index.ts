@@ -4,6 +4,7 @@ import GameResources from "./Game/producer";
 import { GameBuilder, GameState } from "./Game/services/game.service";
 import Player from "./Player/service.player";
 const prompt = require('prompt-sync')({sigint: true});
+const chalk = require("chalk");
 try {
     console.log("Welcome to a new game");
     console.log("Press enter to begin");
@@ -28,7 +29,7 @@ try {
         } catch (error) {
             e=error;
         }
-        console.log(e);
+        console.error(chalk.red(e));
     }
     
     // let sizeOfBoard = 5;
@@ -59,7 +60,7 @@ try {
             playerList.push(player);
             e = null;
         } catch (error) {
-            console.log(error);
+            console.error(chalk.red(error));
             e = error;
             continue;
         }
@@ -83,7 +84,7 @@ try {
             const d2: string = prompt("Enter the dot number of second dot to draw a line to. Choose adjacent dot only");
             gameController.move(d1, d2, thisPlayer);
         } catch (error) {
-            console.error(error);
+            console.error(chalk.red(error));
             continue;
         }
         i++;
