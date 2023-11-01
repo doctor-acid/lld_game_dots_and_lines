@@ -100,6 +100,19 @@ class Game{
         this._gameState = value;
     }
 
+    public boxCreationReward(playersMove: number, numOfBoxes: number): number{
+        return this._boxCreationRewardStrategy.boxCreationReward(playersMove, numOfBoxes);
+    }
+
+    public checkWin(): Player | null{
+        let player = this._winningStrategy.checkWin(this);
+        if(player){
+            this.gameState = GameState.END_IN_WIN;
+            this.winner = player;
+        }
+        return player;
+    }
+
 }
 
 class GameBuilder{

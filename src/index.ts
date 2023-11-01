@@ -6,7 +6,7 @@ import GameResources from "./Game/producer";
 import { GameBuilder, GameState } from "./Game/services/game.service";
 import Player from "./Player/service.player";
 const prompt = require('prompt-sync')({sigint: true});
-const chalk = require("chalk");
+// import chalk from "chalk";
 try {
     console.log("Welcome to a new game");
     console.log("Press enter to begin");
@@ -17,7 +17,9 @@ try {
     let sizeOfBoard;
     let numberOfPlayers;
 
+    e="test";
     while(e){
+        console.log(e);
         try {
             sizeOfBoard = prompt('How many rows-columns of boxes do you want in the game? ');
             numberOfPlayers = prompt('How many players will play the game. Enter a number between 2 and 5?');
@@ -31,7 +33,8 @@ try {
         } catch (error) {
             e=error;
         }
-        console.error(chalk.red(e));
+        // console.error(chalk.red(e));
+        console.log(e)
     }
     
     // let sizeOfBoard = 5;
@@ -53,7 +56,7 @@ try {
     e=null;
 
     //ADD PLAYERS
-    while(e || i<numberOfPlayers){
+    while(!(i>=numberOfPlayers && !e)){
         try {
             const p: string = prompt('Enter the name of player '+(i+1));
             // console.log(`Number of players = ${numberOfPlayers}`);
@@ -61,12 +64,13 @@ try {
             const player = new Player(p, s);
             playerList.push(player);
             e = null;
+            i++;
         } catch (error) {
-            console.error(chalk.red(error));
+            // console.error(chalk.red(error));
+            console.error(error)
             e = error;
             continue;
         }
-        i++;
     }
     console.log(playerList);
     const game = gameBuilder.setPlayers(playerList).build();
@@ -92,11 +96,15 @@ try {
             const d2: string = prompt("Enter the dot number of second dot to draw a line to. Choose adjacent dot only");
             i = gameController.move(d1, d2, thisPlayer, i);
         } catch (error) {
-            console.error(chalk.red(error));
+            // console.error(chalk.red(error));
+            console.error(error);
             continue;
         }
         // boxCreated ? null : i++;
     }
+
+    console.log("***********CONGRATULATIONS***********");
+    console.log(game.winner?.name + " has won the GAME; Time for celebrations")
 } catch (error) {
     console.error(error)
 }

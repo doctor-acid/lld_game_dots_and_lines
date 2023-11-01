@@ -21,9 +21,9 @@ class GameController{
         // if a valid line. Then check if a new box is formed/owned?
         let numOfBoxes = this.checkAndUpdateBox(dotARef, dotBRef, line);
         playersMove = numOfBoxes > 0? playersMove+1: playersMove
-        // playersMove = this.game.boxCreationReward(playersMove, numOfBoxes);
-        // this.game.checkWin();
         this.game.addMove(line);
+        playersMove = this.game.boxCreationReward(playersMove, numOfBoxes);
+        this.game.checkWin();
         return playersMove;
     }
 
@@ -111,15 +111,15 @@ class GameController{
             numOfBoxes++;
         }
 
-        return numOfBoxes;
+        console.log("2222===lesserBox")
+        console.log(lesserBox)
+        console.log("2222===boxM")
+        console.log(boxM)
+        console.log("2222===boxN")
+        console.log(boxN)
+        console.log(directionOfLine)
 
-        // console.log("2222===lesserBox")
-        // console.log(lesserBox)
-        // console.log("2222===boxM")
-        // console.log(boxM)
-        // console.log("2222===boxN")
-        // console.log(boxN)
-        // console.log(directionOfLine)
+        return numOfBoxes;
     }
 
     public setGameState(state: GameState){
