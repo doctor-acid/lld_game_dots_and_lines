@@ -74,6 +74,7 @@ try {
     e=null;
 
     // START GAME
+    gameController.setGameState(GameState.IN_PROGRESS);
     while(game.gameState===GameState.IN_PROGRESS || game.gameState===GameState.NOT_STARTED){
         try {
             gameController.displayBoard();

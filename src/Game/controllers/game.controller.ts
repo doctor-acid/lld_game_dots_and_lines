@@ -1,5 +1,5 @@
 import { Direction, Dot, Line, Direction2D, Player } from "../consumer";
-import { Game } from "../services/game.service";
+import { Game, GameState } from "../services/game.service";
 import IllegalMoveError from "../Errors/IllegalMoveError";
 import { Box } from "../../Board/producer";
 
@@ -107,6 +107,10 @@ class GameController{
         // console.log("2222===boxN")
         // console.log(boxN)
         // console.log(directionOfLine)
+    }
+
+    public setGameState(state: GameState){
+        this.game.gameState = state;
     }
 
     public displayBoard(){
